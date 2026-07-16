@@ -47,7 +47,8 @@ class SyncWorker(
             }
 
             var uploadedCount = 0
-            val totalToUpload = mediaFiles.size
+            var processedCount = 0
+            val totalToProcess = mediaFiles.size
 
             // 2. Process in batches to verify MD5s with server
             val batchSize = 30
@@ -88,17 +89,17 @@ class SyncWorker(
                     return Result.retry()
                 }
 
-                // If already synced on server, save to local DB and skip upload
-                for (syncedMd5 in serverSyncedMd5s) {
-                    val matchingMedia = toCheckOnServer.find { it.md5 == syncedMd5 }
-                    if (matchingMedia != null) {
-                        dao.insert(SyncedFile(matchingMedia.filePath, syncedMd5, matchingMedia.size))
-                        toCheckOnServer.remove(matchingMedia)
-                    }
+                // If already synced on server, mark in local DB and separate from upload list
+                val serverSyncedSet = serverSyncedMd5s.toHashSet()
+                val alreadySyncedOnServer = toCheckOnServer.filter { it.md5 in serverSyncedSet }
+                alreadySyncedOnServer.forEach { matchingMedia ->
+                    dao.insert(SyncedFile(matchingMedia.filePath, matchingMedia.md5!!, matchingMedia.size))
+                    processedCount++
                 }
+                val toUpload = toCheckOnServer.filter { it.md5 !in serverSyncedSet }
 
                 // Upload remaining files
-                for (media in toCheckOnServer) {
+                for (media in toUpload) {
                     val tempFile = createTempFileFromUri(media.uri, media.displayName) ?: continue
                     
                     try {
@@ -115,20 +116,19 @@ class SyncWorker(
                         if (success) {
                             dao.insert(SyncedFile(media.filePath, media.md5, media.size))
                             uploadedCount++
-                            
-                            // Report progress to UI
-                            val progress = ((uploadedCount + (chunkIndex * batchSize)) * 100) / totalToUpload
-                            setProgress(workDataOf(
-                                "progress" to progress,
-                                "currentFile" to media.displayName,
-                                "uploaded" to uploadedCount
-                            ))
                         }
                     } catch (e: Exception) {
-                        // Keep going with other files but log/fail eventually
                         e.printStackTrace()
                     } finally {
+                        processedCount++
                         tempFile.delete() // clean up cache
+                        // Report progress to UI (based on total processed, capped at 100)
+                        val progress = minOf((processedCount * 100) / totalToProcess, 100)
+                        setProgress(workDataOf(
+                            "progress" to progress,
+                            "currentFile" to media.displayName,
+                            "uploaded" to uploadedCount
+                        ))
                     }
                 }
             }

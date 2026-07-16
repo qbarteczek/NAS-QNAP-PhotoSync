@@ -6,7 +6,7 @@ import fs from 'fs';
 import crypto from 'crypto';
 import sqlite3 from 'sqlite3';
 import dotenv from 'dotenv';
-import { Device, SyncLog } from './types';
+import { Device, SyncLog, StorageInfo } from './types';
 
 dotenv.config();
 
@@ -109,7 +109,7 @@ const authenticateDevice = (req: express.Request, res: express.Response, next: e
     if (err || !row) {
       return res.status(401).json({ error: 'Unauthorized device' });
     }
-    req.body.authenticatedDevice = row;
+    res.locals.authenticatedDevice = row;
     next();
   });
 };
@@ -162,7 +162,7 @@ app.post('/api/auth/pair', (req, res) => {
 
 // 3. Upload photo (from Android)
 app.post('/api/upload', authenticateDevice, upload.single('photo'), async (req, res) => {
-  const device = req.body.authenticatedDevice as Device;
+  const device = res.locals.authenticatedDevice as Device;
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }

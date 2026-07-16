@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -139,6 +140,7 @@ fun AppScreen() {
     val currentFileName = activeWorkInfo?.progress?.getString("currentFile") ?: ""
 
     var showQrScanner by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
     if (showQrScanner) {
         QrScannerDialog(
@@ -151,7 +153,7 @@ fun AppScreen() {
                     val code = json.getString("code")
                     
                     // Attempt pairing
-                    CoroutineScope(Dispatchers.Main).launch {
+                    coroutineScope.launch {
                         pairWithServer(context, url, code, sharedPrefs) { token, name, resolvedUrl ->
                             deviceToken = token
                             deviceName = name
@@ -231,7 +233,7 @@ fun AppScreen() {
                         Text("Zeskanuj kod QR z QNAP")
                     }
 
-                    Divider(modifier = Modifier.padding(bottom = 20.dp))
+                    HorizontalDivider(modifier = Modifier.padding(bottom = 20.dp))
 
                     Text(
                         text = "Lub skonfiguruj ręcznie:",
@@ -260,7 +262,7 @@ fun AppScreen() {
                                 Toast.makeText(context, "Wypełnij wszystkie pola!", Toast.LENGTH_SHORT).show()
                                 return@Button
                             }
-                            CoroutineScope(Dispatchers.Main).launch {
+                            coroutineScope.launch {
                                 pairWithServer(context, inputUrl, inputCode, sharedPrefs) { token, name, resolvedUrl ->
                                     deviceToken = token
                                     deviceName = name
@@ -322,7 +324,7 @@ fun AppScreen() {
                         Spacer(modifier = Modifier.height(8.dp))
                         if (syncProgress >= 0) {
                             LinearProgressIndicator(
-                                progress = syncProgress / 100f,
+                                progress = { syncProgress / 100f },
                                 modifier = Modifier.fillMaxWidth()
                             )
                             Text("$syncProgress%", fontSize = 11.sp, modifier = Modifier.align(Alignment.End))
@@ -424,7 +426,7 @@ fun AppScreen() {
                     deviceName = ""
                     serverUrl = ""
                     cancelAutoSync(context)
-                    CoroutineScope(Dispatchers.IO).launch {
+                    coroutineScope.launch {
                         dao.clearAll()
                     }
                     Toast.makeText(context, "Wyrejestrowano urządzenie.", Toast.LENGTH_SHORT).show()
