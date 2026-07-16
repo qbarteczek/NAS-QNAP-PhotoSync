@@ -1,0 +1,28 @@
+# Node / Backend
+server/node_modules/
+server/dist/
+server/.env
+server/data/
+server/uploads/
+
+# Android
+android/.gradle/
+android/local.properties
+android/.idea/
+android/build/
+android/app/build/
+android/*.iml
+android/captures/
+android/.externalNativeBuild/
+android/.cxx/
+
+# General IDEs
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db

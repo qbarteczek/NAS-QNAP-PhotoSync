@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  qsyncphoto-server:
+    build: .
+    container_name: qsyncphoto-server
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      # Map database storage to persist paring keys & logs
+      - ./data:/app/data
+      # Map uploads folder. Użytkownik QNAP może to zamapować na swój folder np. /share/Multimedia/Zdjęcia
+      - ./uploads:/app/uploads
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - UPLOAD_DIR=/app/uploads
+      - DB_PATH=/app/data/qsyncphoto.db

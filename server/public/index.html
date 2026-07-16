@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QSyncPhoto Dashboard</title>
+  <meta name="description" content="Lekki i bezpieczny panel synchronizacji zdjęć z telefonu na serwer QNAP NAS.">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons for premium look -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- QR Code Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">
+          <i data-lucide="refresh-cw" class="spin-icon"></i>
+        </div>
+        <div class="brand-text">
+          <h1>QSyncPhoto</h1>
+          <span>QNAP Storage Sync</span>
+        </div>
+      </div>
+      <nav class="nav-menu">
+        <button class="nav-btn active" data-tab="dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-btn" data-tab="gallery">
+          <i data-lucide="image"></i>
+          <span>Galeria</span>
+        </button>
+        <button class="nav-btn" data-tab="devices">
+          <i data-lucide="smartphone"></i>
+          <span>Urządzenia</span>
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <p>Wersja 1.0.0</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <header class="top-bar">
+        <h2 id="page-title">Dashboard</h2>
+        <div class="user-actions">
+          <button id="btn-pair-header" class="btn btn-primary btn-pair">
+            <i data-lucide="plus-circle"></i>
+            <span>Dodaj telefon</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- TAB: Dashboard -->
+      <section id="tab-dashboard" class="tab-content active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon files">
+              <i data-lucide="files"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Zsynchronizowane pliki</h3>
+              <p id="stat-files">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon devices">
+              <i data-lucide="smartphone"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Połączone telefony</h3>
+              <p id="stat-devices">0</p>
+            </div>
+          </div>
+          <div class="stat-card storage">
+            <div class="stat-icon storage-icon">
+              <i data-lucide="hard-drive"></i>
+            </div>
+            <div class="stat-info">
+              <h3>Przestrzeń dyskowa NAS</h3>
+              <p id="stat-storage-used">0 GB / 0 GB</p>
+              <div class="progress-container">
+                <div class="progress-bar" id="storage-progress" style="width: 0%"></div>
+              </div>
+              <span id="stat-storage-percent">0% zajęte</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-sections">
+          <!-- Quick Sync Actions & Status -->
+          <div class="dashboard-panel">
+            <div class="panel-header">
+              <h3>Szybki start & Instrukcja</h3>
+            </div>
+            <div class="panel-body instruction-box">
+              <ol class="steps-list">
+                <li>
+                  <strong>Zainstaluj aplikację na telefonie</strong>
+                  <p>Skonfiguruj projekt Kotlin z katalogu <code>/android</code> i zainstaluj go na swoim urządzeniu z Androidem.</p>
+                </li>
+                <li>
+                  <strong>Sparuj urządzenie</strong>
+                  <p>Kliknij przycisk "Dodaj telefon" powyżej. Wyświetli się kod QR, który należy zeskanować w aplikacji na telefonie.</p>
+                </li>
+                <li>
+                  <strong>Wybierz zdjęcia i synchronizuj</strong>
+                  <p>Aplikacja automatycznie wykryje folder <code>DCIM</code> i rozpocznie przesyłanie nowych zdjęć w tle.</p>
+                </li>
+              </ol>
+            </div>
+          </div>
+
+          <!-- Recent Synced Photos Preview -->
+          <div class="dashboard-panel">
+            <div class="panel-header">
+              <h3>Ostatnio dodane</h3>
+              <button class="btn btn-link" onclick="switchTab('gallery')">Zobacz wszystkie</button>
+            </div>
+            <div class="panel-body">
+              <div id="recent-photos-preview" class="recent-grid">
+                <!-- Dynamically populated -->
+                <div class="empty-state">
+                  <i data-lucide="image-off"></i>
+                  <p>Brak zsynchronizowanych zdjęć</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Gallery -->
+      <section id="tab-gallery" class="tab-content">
+        <div class="gallery-container">
+          <div id="gallery-grid" class="masonry-grid">
+            <!-- Dynamically populated grouped by date -->
+            <div class="empty-state">
+              <i data-lucide="images"></i>
+              <p>Brak zdjęć do wyświetlenia. Sparuj telefon i zacznij synchronizację.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Devices -->
+      <section id="tab-devices" class="tab-content">
+        <div class="devices-container">
+          <div class="panel-header">
+            <h3>Zarejestrowane telefony</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="devices-table">
+              <thead>
+                <tr>
+                  <th>Nazwa urządzenia</th>
+                  <th>Data sparowania</th>
+                  <th>Ostatnia synchronizacja</th>
+                  <th>Akcje</th>
+                </tr>
+              </thead>
+              <tbody id="devices-list">
+                <!-- Dynamically populated -->
+                <tr>
+                  <td colspan="4" class="text-center">Brak połączonych urządzeń</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL: Pairing QR Code -->
+  <div id="modal-pair" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Dodaj nowe urządzenie</h3>
+        <button class="modal-close" id="btn-close-modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Otwórz aplikację QSyncPhoto na telefonie z Androidem i zeskanuj poniższy kod QR lub wprowadź dane ręcznie:</p>
+        <div class="qr-container">
+          <canvas id="pairing-qr-canvas"></canvas>
+          <div class="pairing-code-box">
+            <span class="code-label">KOD PAROWANIA:</span>
+            <span id="pairing-code" class="code-value">------</span>
+          </div>
+        </div>
+        <div class="connection-details">
+          <p><strong>Adres serwera:</strong> <span id="server-url">Wyszukiwanie...</span></p>
+          <p class="expiry-warning"><i data-lucide="clock"></i> Kod QR wygaśnie za: <span id="pairing-timer">5:00</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX: Fullscreen Photo -->
+  <div id="lightbox" class="lightbox-overlay">
+    <button class="lightbox-close" id="btn-close-lightbox">
+      <i data-lucide="x"></i>
+    </button>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="Podgląd zdjęcia">
+      <div class="lightbox-meta">
+        <h4 id="lightbox-filename">Zdjęcie</h4>
+        <p id="lightbox-info">Przesłano z: Samsung Galaxy S23 | 2026-07-17</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
