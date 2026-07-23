@@ -2,7 +2,7 @@
 
 > Automatyczna synchronizacja zdjęć z telefonu Android na serwer QNAP NAS – przez Wi-Fi, w tle, bez duplikatów.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-20-green.svg)](https://nodejs.org)
 [![Android](https://img.shields.io/badge/Android-8.0%2B-brightgreen.svg)](https://developer.android.com)
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg)](https://docs.docker.com/compose/)
@@ -197,7 +197,7 @@ http://<IP_TWOJEGO_QNAP>:3000
 
 ## 📄 Licencja
 
-Projekt dostępny na licencji **MIT** – możesz go swobodnie używać, modyfikować i dystrybuować.
+Projekt dostępny na licencji **GPL-3.0** – możesz go swobodnie używać, modyfikować i dystrybuować pod warunkiem udostępniania kodu pochodnego na tej samej licencji.
 
 ---
 

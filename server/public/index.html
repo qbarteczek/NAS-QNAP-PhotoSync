@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QSyncPhoto Dashboard</title>
+  <title>NAS QNAP Photo Sync Dashboard</title>
   <meta name="description" content="Lekki i bezpieczny panel synchronizacji zdjęć z telefonu na serwer QNAP NAS.">
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,7 +12,7 @@
   <!-- Lucide Icons for premium look -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- QR Code Library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qr-creator/dist/qr-creator.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,7 +24,7 @@
           <i data-lucide="refresh-cw" class="spin-icon"></i>
         </div>
         <div class="brand-text">
-          <h1>QSyncPhoto</h1>
+          <h1>NAS QNAP Photo Sync</h1>
           <span>QNAP Storage Sync</span>
         </div>
       </div>
@@ -190,9 +190,9 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Otwórz aplikację QSyncPhoto na telefonie z Androidem i zeskanuj poniższy kod QR lub wprowadź dane ręcznie:</p>
+        <p>Otwórz aplikację NAS QNAP Photo Sync na telefonie z Androidem i zeskanuj poniższy kod QR lub wprowadź dane ręcznie:</p>
         <div class="qr-container">
-          <canvas id="pairing-qr-canvas"></canvas>
+          <div id="pairing-qr-canvas"></div>
           <div class="pairing-code-box">
             <span class="code-label">KOD PAROWANIA:</span>
             <span id="pairing-code" class="code-value">------</span>

@@ -17,7 +17,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@android:drawable/sym_def_app_icon"
-        android:label="QSyncPhoto"
+        android:label="NAS QNAP Photo Sync"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true"> <!-- Allow HTTP local QNAP connections -->

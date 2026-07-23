@@ -177,7 +177,7 @@ fun AppScreen() {
     ) {
         // App Title
         Text(
-            text = "QSyncPhoto",
+            text = "NAS QNAP Photo Sync",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary,

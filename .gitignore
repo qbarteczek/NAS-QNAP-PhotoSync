@@ -26,3 +26,5 @@ android/.cxx/
 *.sw?
 .DS_Store
 Thumbs.db
+android/gradle-*/
+android/*.zip

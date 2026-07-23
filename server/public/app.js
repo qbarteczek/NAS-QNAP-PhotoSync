@@ -383,14 +383,17 @@ async function generatePairingCode() {
       code: data.code
     });
 
-    const qr = new QRious({
-      element: document.getElementById('pairing-qr-canvas'),
-      value: qrPayload,
-      size: 200,
+    const qrContainer = document.getElementById('pairing-qr-canvas');
+    qrContainer.innerHTML = ''; // Clear previous QR
+
+    QrCreator.render({
+      text: qrPayload,
+      radius: 0.0,
+      ecLevel: 'M',
+      fill: '#0d0f19',
       background: '#ffffff',
-      foreground: '#0d0f19',
-      level: 'M'
-    });
+      size: 200
+    }, qrContainer);
 
     // Handle Countdown Timer
     clearInterval(state.pairingTimer);
