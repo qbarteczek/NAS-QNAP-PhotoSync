@@ -1,4 +1,4 @@
-# 📱→🖥️ QSyncPhoto
+# 📱→🖥️ NAS QNAP PhotoSync
 
 > Automatyczna synchronizacja zdjęć z telefonu Android na serwer QNAP NAS – przez Wi-Fi, w tle, bez duplikatów.
 
@@ -11,13 +11,13 @@
 
 ## 📖 Opis
 
-**QSyncPhoto** to dwuczęściowe rozwiązanie open-source do pełnej automatyzacji backupu zdjęć z telefonów z systemem **Android** na domowy serwer **QNAP NAS** – bez abonamentów, chmury publicznej ani ograniczeń pojemności.
+**NAS QNAP PhotoSync** to dwuczęściowe rozwiązanie open-source do pełnej automatyzacji backupu zdjęć z telefonów z systemem **Android** na domowy serwer **QNAP NAS** – bez abonamentów, chmury publicznej ani ograniczeń pojemności.
 
 ### Jak to działa?
 
 ```
 [Telefon Android]  ──(Wi-Fi)──►  [Serwer QNAP NAS]
-   QSyncPhoto App                  QSyncPhoto Server
+   NAS QNAP PhotoSync App                  NAS QNAP PhotoSync Server
    (Kotlin + WorkManager)          (Node.js + Docker)
          │                                 │
          │  1. Skanuje folder DCIM         │

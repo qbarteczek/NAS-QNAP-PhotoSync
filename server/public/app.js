@@ -99,7 +99,7 @@ function switchTab(tabId) {
     'gallery': 'Galeria Zdjęć',
     'devices': 'Połączone Telefony'
   };
-  document.getElementById('page-title').textContent = titleMap[tabId] || 'QSyncPhoto';
+  document.getElementById('page-title').textContent = titleMap[tabId] || 'NAS QNAP PhotoSync';
   
   // Specific tab loading
   if (tabId === 'gallery') {

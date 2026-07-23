@@ -329,6 +329,6 @@ app.get('/api/photos', (req, res) => {
 
 // Start Server
 app.listen(PORT, () => {
-  console.log(`QSyncPhoto Server running on port ${PORT}`);
+  console.log(`NAS QNAP PhotoSync Server running on port ${PORT}`);
   console.log(`Photos directory: ${UPLOAD_DIR}`);
 });
